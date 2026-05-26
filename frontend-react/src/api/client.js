@@ -1,13 +1,12 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:3000/api";
+const API_BASE_URL = "https://baragar-backend.onrender.com/api";
 
 const apiClient = {
   // Product endpoints
   getAllProducts: async () => {
     try {
       const response = await axios.get(`${API_BASE_URL}/products`);
-      // Backend returns { success, data, count } — normalize to return the inner data array when present
       return { data: response.data?.data ?? response.data };
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -29,7 +28,7 @@ const apiClient = {
   getProductImages: async (productId) => {
     try {
       const response = await axios.get(
-        `${API_BASE_URL}/images/product/${productId}`,
+        `${API_BASE_URL}/images/product/${productId}`
       );
       return { data: response.data?.data ?? response.data };
     } catch (error) {
@@ -62,7 +61,7 @@ const apiClient = {
   getUserByEmail: async (email) => {
     try {
       const response = await axios.get(
-        `${API_BASE_URL}/users/email/${encodeURIComponent(email)}`,
+        `${API_BASE_URL}/users/email/${encodeURIComponent(email)}`
       );
       return { data: response.data?.data ?? response.data };
     } catch (error) {
@@ -85,7 +84,7 @@ const apiClient = {
     try {
       const response = await axios.post(
         `${API_BASE_URL}/users/login`,
-        credentials,
+        credentials
       );
       return { data: response.data?.data ?? response.data };
     } catch (error) {
@@ -98,7 +97,7 @@ const apiClient = {
     try {
       const response = await axios.post(
         `${API_BASE_URL}/users/admin/login`,
-        credentials,
+        credentials
       );
       return { data: response.data?.data ?? response.data };
     } catch (error) {
@@ -111,7 +110,7 @@ const apiClient = {
     try {
       const response = await axios.post(
         `${API_BASE_URL}/users/admin/register`,
-        userData,
+        userData
       );
       return { data: response.data };
     } catch (error) {
@@ -168,7 +167,7 @@ const apiClient = {
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
-        },
+        }
       );
       return { data: response.data };
     } catch (error) {
@@ -181,7 +180,7 @@ const apiClient = {
     try {
       const response = await axios.put(
         `${API_BASE_URL}/images/${id}`,
-        imageData,
+        imageData
       );
       return { data: response.data };
     } catch (error) {
@@ -206,7 +205,6 @@ const apiClient = {
       const response = await axios.get(`${API_BASE_URL}/orders`);
       return { data: response.data?.data ?? response.data };
     } catch (error) {
-      // If orders endpoint is not implemented on backend, return empty list instead of throwing
       if (error?.response?.status === 404) {
         console.warn("Orders endpoint not found (404) — returning empty list");
         return { data: [] };
@@ -216,7 +214,6 @@ const apiClient = {
     }
   },
 
-  // Order creation
   createOrder: async (orderData) => {
     try {
       const response = await axios.post(`${API_BASE_URL}/orders`, orderData);
@@ -227,7 +224,7 @@ const apiClient = {
     }
   },
 
-  // Product create/update/delete (supports optional image upload)
+  // Product create/update/delete
   createProduct: async (productData, imageFile = null) => {
     try {
       const response = await axios.post(
@@ -235,18 +232,21 @@ const apiClient = {
         productData,
         {
           headers: { "Content-Type": "application/json" },
-        },
+        }
       );
-      const result = { data: response.data };
 
-      // If image file provided and product id returned, upload it
+      const result = { data: response.data };
       const productId = result.data?.data?.id || result.data?.id;
+
       if (imageFile && productId) {
         const fd = new FormData();
         fd.append("product_id", productId);
         fd.append("image", imageFile);
+
         try {
-          await axios.post(`${API_BASE_URL}/images/upload`, fd);
+          await axios.post(`${API_BASE_URL}/images/upload`, fd, {
+            headers: { "Content-Type": "multipart/form-data" },
+          });
         } catch (imgErr) {
           console.error("Error uploading product image:", imgErr);
         }
@@ -266,15 +266,18 @@ const apiClient = {
         productData,
         {
           headers: { "Content-Type": "application/json" },
-        },
+        }
       );
 
       if (imageFile) {
         const fd = new FormData();
         fd.append("product_id", id);
         fd.append("image", imageFile);
+
         try {
-          await axios.post(`${API_BASE_URL}/images/upload`, fd);
+          await axios.post(`${API_BASE_URL}/images/upload`, fd, {
+            headers: { "Content-Type": "multipart/form-data" },
+          });
         } catch (imgErr) {
           console.error("Error uploading product image:", imgErr);
         }
@@ -308,12 +311,11 @@ const apiClient = {
     }
   },
 
-  // eSewa Payment
   initializeEsewa: async (paymentData) => {
     try {
       const response = await axios.post(
         `${API_BASE_URL}/payments/esewa/initialize`,
-        paymentData,
+        paymentData
       );
       return { data: response.data?.data ?? response.data };
     } catch (error) {
@@ -326,7 +328,7 @@ const apiClient = {
     try {
       const response = await axios.post(
         `${API_BASE_URL}/payments/esewa/verify`,
-        { data },
+        { data }
       );
       return { data: response.data?.data ?? response.data };
     } catch (error) {
@@ -335,12 +337,11 @@ const apiClient = {
     }
   },
 
-  // Khalti Payment
   initializeKhalti: async (paymentData) => {
     try {
       const response = await axios.post(
         `${API_BASE_URL}/payments/khalti/initialize`,
-        paymentData,
+        paymentData
       );
       return { data: response.data?.data ?? response.data };
     } catch (error) {
@@ -353,7 +354,7 @@ const apiClient = {
     try {
       const response = await axios.post(
         `${API_BASE_URL}/payments/khalti/verify`,
-        verificationData,
+        verificationData
       );
       return { data: response.data?.data ?? response.data };
     } catch (error) {
@@ -362,12 +363,11 @@ const apiClient = {
     }
   },
 
-  // Cash on Delivery
   processCOD: async (orderData) => {
     try {
       const response = await axios.post(
         `${API_BASE_URL}/payments/cod/process`,
-        orderData,
+        orderData
       );
       return { data: response.data?.data ?? response.data };
     } catch (error) {
