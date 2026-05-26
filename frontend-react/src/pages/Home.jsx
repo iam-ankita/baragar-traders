@@ -26,10 +26,11 @@ const Home = () => {
           try {
             const imgRes = await apiClient.getProductImages(p.id);
             const img = imgRes.data?.[0]?.image_path;
+
             return {
               ...p,
               image: img
-                ? `http://localhost:3000${img}`
+                ? `https://baragar-backend.onrender.com${img}`
                 : "https://via.placeholder.com/300x300",
             };
           } catch {
@@ -38,7 +39,7 @@ const Home = () => {
               image: "https://via.placeholder.com/300x300",
             };
           }
-        }),
+        })
       );
 
       setProducts(withImages);
@@ -86,40 +87,26 @@ const Home = () => {
         <h2>Featured Products</h2>
 
         <div className="bt-product-grid bt-product-grid-static">
-          <div className="bt-product-card">
-            <div className="bt-product-image-wrap">
-              <img src="/images/Copper Bowl .png" alt="Copper Bowl" />
-            </div>
-            <h4>Copper Bowl</h4>
-            <button className="bt-add-cart-btn">Add to Cart</button>
-          </div>
+          {products.length > 0 ? (
+            products.map((product) => (
+              <div className="bt-product-card" key={product.id}>
+                <div className="bt-product-image-wrap">
+                  <img src={product.image} alt={product.name} />
+                </div>
 
-          <div className="bt-product-card">
-            <div className="bt-product-image-wrap">
-              <img src="/images/Brass Water Jug.png" alt="Brass Water Jug" />
-            </div>
-            <h4>Brass Water Jug</h4>
-            <button className="bt-add-cart-btn">Add to Cart</button>
-          </div>
+                <h4>{product.name}</h4>
 
-          <div className="bt-product-card">
-            <div className="bt-product-image-wrap">
-              <img src="/images/Copper Mug.png" alt="Copper Mug" />
-            </div>
-            <h4>Copper Mug</h4>
-            <button className="bt-add-cart-btn">Add to Cart</button>
-          </div>
-
-          <div className="bt-product-card">
-            <div className="bt-product-image-wrap">
-              <img
-                src="/images/Brass Dinner Set.png"
-                alt="Brass Dinner Set"
-              />
-            </div>
-            <h4>Brass Dinner Set</h4>
-            <button className="bt-add-cart-btn">Add to Cart</button>
-          </div>
+                <button
+                  className="bt-add-cart-btn"
+                  onClick={() => addToCart(product)}
+                >
+                  Add to Cart
+                </button>
+              </div>
+            ))
+          ) : (
+            <p>No featured products found.</p>
+          )}
         </div>
       </section>
 
