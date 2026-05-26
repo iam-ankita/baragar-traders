@@ -1,0 +1,262 @@
+/* =========================
+   RESET
+========================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #161616;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* =========================
+   HEADER
+========================= */
+.bt-header {
+  width: 100%;
+  background: #050505;
+}
+
+.bt-header-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 40px;
+  height: 70px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bt-brand {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.bt-brand-nepali {
+  color: #c98a4b;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.bt-brand-english {
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.bt-nav {
+  display: flex;
+  gap: 30px;
+}
+
+.bt-nav a {
+  color: #ddd;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.bt-nav a:hover {
+  color: #fff;
+}
+
+.bt-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.bt-login-link,
+.bt-cart-link,
+.bt-user-btn {
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* =========================
+   HERO
+========================= */
+.bt-home-hero {
+  max-width: 1280px;
+  margin: 0 auto;
+  background: #111;
+  color: #fff;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+
+  padding: 50px;
+}
+
+.bt-home-hero-content {
+  max-width: 500px;
+}
+
+.bt-home-tag {
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: #c9b39a;
+  margin-bottom: 15px;
+}
+
+.bt-home-hero-content h1 {
+  font-size: 46px;
+  line-height: 1.2;
+  margin-bottom: 20px;
+  
+}
+
+
+
+.bt-home-sub {
+  font-size: 15px;
+  color: #ccc;
+  margin-bottom: 25px;
+}
+
+.bt-shop-btn {
+  background: #fff;
+  color: #111;
+  padding: 10px 20px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.bt-home-hero-image img {
+  width: 100%;
+  height: 380px;
+  object-fit: cover;
+}
+
+/* =========================
+   FEATURES
+========================= */
+.bt-home-features {
+  max-width: 1280px;
+  margin: 0 auto;
+  background: #1a1a1a;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.bt-feature-item {
+  text-align: center;
+  color: #fff;
+  padding: 15px;
+  border-right: 1px solid #333;
+}
+
+.bt-feature-item:last-child {
+  border-right: none;
+}
+
+/* =========================
+   PRODUCTS
+========================= */
+.bt-featured-section {
+  max-width: 1280px;
+  margin: 0 auto;
+  background: #f3f0ea;
+  padding: 60px 40px;
+}
+
+.bt-featured-section h2 {
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 28px;
+}
+
+.bt-product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
+}
+
+.bt-product-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 15px;
+  text-align: center;
+}
+
+.bt-product-image-wrap {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bt-product-image-wrap img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.bt-product-card h4 {
+  margin: 15px 0;
+}
+
+.bt-add-cart-btn {
+  background: #111;
+  color: #fff;
+  padding: 8px 15px;
+  border: none;
+  cursor: pointer;
+}
+
+/* =========================
+   BOTTOM BANNER (FIXED)
+========================= */
+.bt-bottom-banner {
+  max-width: 1280px;
+  margin: 0 auto;
+  background: #000;
+  color: #fff;
+
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  align-items: center;
+  gap: 36px;
+
+  padding: 35px 40px;
+}
+
+.bt-bottom-banner img {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+  display: block;
+}
+
+.bt-bottom-banner-text p {
+  font-size: 12px;
+  color: #c9b39a;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.bt-bottom-banner-text h3 {
+  font-size: 28px;
+  line-height: 1.2;
+}
+
+/* =========================
+   FOOTER ALIGN FIX
+========================= */
+.footer {
+  max-width: 1280px;
+  margin: 0 auto;
+  border-top: 1px solid #d9d4cb;
+}
