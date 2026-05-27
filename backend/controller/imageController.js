@@ -196,8 +196,9 @@ const deleteImage = async (req, res) => {
       });
     }
 
-    // Delete file from uploads folder
-    const imagePath = path.join(__dirname, '../..', image[0].image_path);
+    // Delete file from uploads folder (supports persistent volume)
+    const uploadsDir = process.env.UPLOADS_DIR || path.join(__dirname, '../uploads');
+    const imagePath = path.join(uploadsDir, path.basename(image[0].image_path));
     if (fs.existsSync(imagePath)) {
       fs.unlinkSync(imagePath);
     }
