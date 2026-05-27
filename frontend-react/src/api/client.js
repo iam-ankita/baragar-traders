@@ -1,379 +1,207 @@
 import axios from "axios";
 
-const API_BASE_URL = "https://baragar-backend.onrender.com/api";
+const API_BASE_URL =
+  "https://jubliant-simplicity-production-33e3.up.railway.app/api";
 
 const apiClient = {
-  // Product endpoints
   getAllProducts: async () => {
-    try {
-      const response = await axios.get(`${API_BASE_URL}/products`);
-      return { data: response.data?.data ?? response.data };
-    } catch (error) {
-      console.error("Error fetching products:", error);
-      throw error;
-    }
+    const response = await axios.get(`${API_BASE_URL}/products`);
+    return { data: response.data?.data ?? response.data };
   },
 
   getProductById: async (id) => {
-    try {
-      const response = await axios.get(`${API_BASE_URL}/products/${id}`);
-      return { data: response.data?.data ?? response.data };
-    } catch (error) {
-      console.error("Error fetching product:", error);
-      throw error;
-    }
+    const response = await axios.get(`${API_BASE_URL}/products/${id}`);
+    return { data: response.data?.data ?? response.data };
   },
 
-  // Image endpoints
   getProductImages: async (productId) => {
-    try {
-      const response = await axios.get(
-        `${API_BASE_URL}/images/product/${productId}`
-      );
-      return { data: response.data?.data ?? response.data };
-    } catch (error) {
-      console.error("Error fetching images:", error);
-      throw error;
-    }
+    const response = await axios.get(`${API_BASE_URL}/images/product/${productId}`);
+    return { data: response.data?.data ?? response.data };
   },
 
-  // User endpoints
   getAllUsers: async () => {
-    try {
-      const response = await axios.get(`${API_BASE_URL}/users`);
-      return { data: response.data?.data ?? response.data };
-    } catch (error) {
-      console.error("Error fetching users:", error);
-      throw error;
-    }
+    const response = await axios.get(`${API_BASE_URL}/users`);
+    return { data: response.data?.data ?? response.data };
   },
 
   getUserById: async (id) => {
-    try {
-      const response = await axios.get(`${API_BASE_URL}/users/${id}`);
-      return { data: response.data?.data ?? response.data };
-    } catch (error) {
-      console.error("Error fetching user:", error);
-      throw error;
-    }
+    const response = await axios.get(`${API_BASE_URL}/users/${id}`);
+    return { data: response.data?.data ?? response.data };
   },
 
   getUserByEmail: async (email) => {
-    try {
-      const response = await axios.get(
-        `${API_BASE_URL}/users/email/${encodeURIComponent(email)}`
-      );
-      return { data: response.data?.data ?? response.data };
-    } catch (error) {
-      console.error("Error fetching user by email:", error);
-      throw error;
-    }
+    const response = await axios.get(
+      `${API_BASE_URL}/users/email/${encodeURIComponent(email)}`
+    );
+    return { data: response.data?.data ?? response.data };
   },
 
   createUser: async (userData) => {
-    try {
-      const response = await axios.post(`${API_BASE_URL}/users`, userData);
-      return { data: response.data };
-    } catch (error) {
-      console.error("Error creating user:", error);
-      throw error;
-    }
+    const response = await axios.post(`${API_BASE_URL}/users`, userData);
+    return { data: response.data };
   },
 
   loginUser: async (credentials) => {
-    try {
-      const response = await axios.post(
-        `${API_BASE_URL}/users/login`,
-        credentials
-      );
-      return { data: response.data?.data ?? response.data };
-    } catch (error) {
-      console.error("Error logging in user:", error);
-      throw error;
-    }
+    const response = await axios.post(`${API_BASE_URL}/users/login`, credentials);
+    return { data: response.data?.data ?? response.data };
   },
 
   adminLogin: async (credentials) => {
-    try {
-      const response = await axios.post(
-        `${API_BASE_URL}/users/admin/login`,
-        credentials
-      );
-      return { data: response.data?.data ?? response.data };
-    } catch (error) {
-      console.error("Error logging in admin:", error);
-      throw error;
-    }
+    const response = await axios.post(
+      `${API_BASE_URL}/users/admin/login`,
+      credentials
+    );
+    return { data: response.data?.data ?? response.data };
   },
 
   adminRegister: async (userData) => {
-    try {
-      const response = await axios.post(
-        `${API_BASE_URL}/users/admin/register`,
-        userData
-      );
-      return { data: response.data };
-    } catch (error) {
-      console.error("Error registering admin:", error);
-      throw error;
-    }
+    const response = await axios.post(
+      `${API_BASE_URL}/users/admin/register`,
+      userData
+    );
+    return { data: response.data };
   },
 
   updateUser: async (id, userData) => {
-    try {
-      const response = await axios.put(`${API_BASE_URL}/users/${id}`, userData);
-      return { data: response.data };
-    } catch (error) {
-      console.error("Error updating user:", error);
-      throw error;
-    }
+    const response = await axios.put(`${API_BASE_URL}/users/${id}`, userData);
+    return { data: response.data };
   },
 
   deleteUser: async (id) => {
-    try {
-      const response = await axios.delete(`${API_BASE_URL}/users/${id}`);
-      return { data: response.data };
-    } catch (error) {
-      console.error("Error deleting user:", error);
-      throw error;
-    }
+    const response = await axios.delete(`${API_BASE_URL}/users/${id}`);
+    return { data: response.data };
   },
 
-  // Image collection
   getAllImages: async () => {
-    try {
-      const response = await axios.get(`${API_BASE_URL}/images`);
-      return { data: response.data?.data ?? response.data };
-    } catch (error) {
-      console.error("Error fetching images list:", error);
-      throw error;
-    }
+    const response = await axios.get(`${API_BASE_URL}/images`);
+    return { data: response.data?.data ?? response.data };
   },
 
   getImageById: async (id) => {
-    try {
-      const response = await axios.get(`${API_BASE_URL}/images/${id}`);
-      return { data: response.data };
-    } catch (error) {
-      console.error("Error fetching image:", error);
-      throw error;
-    }
+    const response = await axios.get(`${API_BASE_URL}/images/${id}`);
+    return { data: response.data };
   },
 
   uploadImage: async (formData) => {
-    try {
-      const response = await axios.post(
-        `${API_BASE_URL}/images/upload`,
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
-      return { data: response.data };
-    } catch (error) {
-      console.error("Error uploading image:", error);
-      throw error;
-    }
+    const response = await axios.post(`${API_BASE_URL}/images/upload`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return { data: response.data };
   },
 
   updateImage: async (id, imageData) => {
-    try {
-      const response = await axios.put(
-        `${API_BASE_URL}/images/${id}`,
-        imageData
-      );
-      return { data: response.data };
-    } catch (error) {
-      console.error("Error updating image:", error);
-      throw error;
-    }
+    const response = await axios.put(`${API_BASE_URL}/images/${id}`, imageData);
+    return { data: response.data };
   },
 
   deleteImage: async (id) => {
-    try {
-      const response = await axios.delete(`${API_BASE_URL}/images/${id}`);
-      return { data: response.data };
-    } catch (error) {
-      console.error("Error deleting image:", error);
-      throw error;
-    }
+    const response = await axios.delete(`${API_BASE_URL}/images/${id}`);
+    return { data: response.data };
   },
 
-  // Orders
   getAllOrders: async () => {
     try {
       const response = await axios.get(`${API_BASE_URL}/orders`);
       return { data: response.data?.data ?? response.data };
     } catch (error) {
       if (error?.response?.status === 404) {
-        console.warn("Orders endpoint not found (404) — returning empty list");
         return { data: [] };
       }
-      console.error("Error fetching orders:", error);
       throw error;
     }
   },
 
   createOrder: async (orderData) => {
-    try {
-      const response = await axios.post(`${API_BASE_URL}/orders`, orderData);
-      return { data: response.data };
-    } catch (error) {
-      console.error("Error creating order:", error);
-      throw error;
-    }
+    const response = await axios.post(`${API_BASE_URL}/orders`, orderData);
+    return { data: response.data };
   },
 
-  // Product create/update/delete
   createProduct: async (productData, imageFile = null) => {
-    try {
-      const response = await axios.post(
-        `${API_BASE_URL}/products`,
-        productData,
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      );
+    const response = await axios.post(`${API_BASE_URL}/products`, productData, {
+      headers: { "Content-Type": "application/json" },
+    });
 
-      const result = { data: response.data };
-      const productId = result.data?.data?.id || result.data?.id;
+    const result = { data: response.data };
+    const productId = result.data?.data?.id || result.data?.id;
 
-      if (imageFile && productId) {
-        const fd = new FormData();
-        fd.append("product_id", productId);
-        fd.append("image", imageFile);
+    if (imageFile && productId) {
+      const fd = new FormData();
+      fd.append("product_id", productId);
+      fd.append("image", imageFile);
 
-        try {
-          await axios.post(`${API_BASE_URL}/images/upload`, fd, {
-            headers: { "Content-Type": "multipart/form-data" },
-          });
-        } catch (imgErr) {
-          console.error("Error uploading product image:", imgErr);
-        }
-      }
-
-      return result;
-    } catch (error) {
-      console.error("Error creating product:", error);
-      throw error;
+      await axios.post(`${API_BASE_URL}/images/upload`, fd, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
     }
+
+    return result;
   },
 
   updateProduct: async (id, productData, imageFile = null) => {
-    try {
-      const response = await axios.put(
-        `${API_BASE_URL}/products/${id}`,
-        productData,
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      );
+    const response = await axios.put(`${API_BASE_URL}/products/${id}`, productData, {
+      headers: { "Content-Type": "application/json" },
+    });
 
-      if (imageFile) {
-        const fd = new FormData();
-        fd.append("product_id", id);
-        fd.append("image", imageFile);
+    if (imageFile) {
+      const fd = new FormData();
+      fd.append("product_id", id);
+      fd.append("image", imageFile);
 
-        try {
-          await axios.post(`${API_BASE_URL}/images/upload`, fd, {
-            headers: { "Content-Type": "multipart/form-data" },
-          });
-        } catch (imgErr) {
-          console.error("Error uploading product image:", imgErr);
-        }
-      }
-
-      return { data: response.data };
-    } catch (error) {
-      console.error("Error updating product:", error);
-      throw error;
+      await axios.post(`${API_BASE_URL}/images/upload`, fd, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
     }
+
+    return { data: response.data };
   },
 
   deleteProduct: async (id) => {
-    try {
-      const response = await axios.delete(`${API_BASE_URL}/products/${id}`);
-      return { data: response.data };
-    } catch (error) {
-      console.error("Error deleting product:", error);
-      throw error;
-    }
+    const response = await axios.delete(`${API_BASE_URL}/products/${id}`);
+    return { data: response.data };
   },
 
-  // Payment methods
   getPaymentConfig: async () => {
-    try {
-      const response = await axios.get(`${API_BASE_URL}/payments/config`);
-      return { data: response.data?.data ?? response.data };
-    } catch (error) {
-      console.error("Error fetching payment config:", error);
-      throw error;
-    }
+    const response = await axios.get(`${API_BASE_URL}/payments/config`);
+    return { data: response.data?.data ?? response.data };
   },
 
   initializeEsewa: async (paymentData) => {
-    try {
-      const response = await axios.post(
-        `${API_BASE_URL}/payments/esewa/initialize`,
-        paymentData
-      );
-      return { data: response.data?.data ?? response.data };
-    } catch (error) {
-      console.error("Error initializing eSewa:", error);
-      throw error;
-    }
+    const response = await axios.post(
+      `${API_BASE_URL}/payments/esewa/initialize`,
+      paymentData
+    );
+    return { data: response.data?.data ?? response.data };
   },
 
   verifyEsewa: async (data) => {
-    try {
-      const response = await axios.post(
-        `${API_BASE_URL}/payments/esewa/verify`,
-        { data }
-      );
-      return { data: response.data?.data ?? response.data };
-    } catch (error) {
-      console.error("Error verifying eSewa:", error);
-      throw error;
-    }
+    const response = await axios.post(`${API_BASE_URL}/payments/esewa/verify`, {
+      data,
+    });
+    return { data: response.data?.data ?? response.data };
   },
 
   initializeKhalti: async (paymentData) => {
-    try {
-      const response = await axios.post(
-        `${API_BASE_URL}/payments/khalti/initialize`,
-        paymentData
-      );
-      return { data: response.data?.data ?? response.data };
-    } catch (error) {
-      console.error("Error initializing Khalti:", error);
-      throw error;
-    }
+    const response = await axios.post(
+      `${API_BASE_URL}/payments/khalti/initialize`,
+      paymentData
+    );
+    return { data: response.data?.data ?? response.data };
   },
 
   verifyKhalti: async (verificationData) => {
-    try {
-      const response = await axios.post(
-        `${API_BASE_URL}/payments/khalti/verify`,
-        verificationData
-      );
-      return { data: response.data?.data ?? response.data };
-    } catch (error) {
-      console.error("Error verifying Khalti:", error);
-      throw error;
-    }
+    const response = await axios.post(
+      `${API_BASE_URL}/payments/khalti/verify`,
+      verificationData
+    );
+    return { data: response.data?.data ?? response.data };
   },
 
   processCOD: async (orderData) => {
-    try {
-      const response = await axios.post(
-        `${API_BASE_URL}/payments/cod/process`,
-        orderData
-      );
-      return { data: response.data?.data ?? response.data };
-    } catch (error) {
-      console.error("Error processing COD:", error);
-      throw error;
-    }
+    const response = await axios.post(
+      `${API_BASE_URL}/payments/cod/process`,
+      orderData
+    );
+    return { data: response.data?.data ?? response.data };
   },
 };
 
