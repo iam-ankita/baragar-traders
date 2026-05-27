@@ -30,6 +30,41 @@ async function migrateDatabase() {
   }
 }
 
+// Add quantity column to products table (for older schemas)
+async function addQuantityColumn() {
+  try {
+    const result = await db.query(`
+      SELECT COLUMN_NAME
+      FROM INFORMATION_SCHEMA.COLUMNS
+      WHERE TABLE_SCHEMA = DATABASE()
+        AND TABLE_NAME = 'products'
+        AND COLUMN_NAME = 'quantity'
+    `);
+
+    const columns =
+      Array.isArray(result) && Array.isArray(result[0]) ? result[0] : result;
+
+    if (!columns || columns.length === 0) {
+      await db.query(`
+        ALTER TABLE products
+        ADD COLUMN quantity INT(11) NOT NULL DEFAULT 0
+      `);
+      console.log("Quantity column added to products table");
+    } else {
+      console.log("Quantity column already exists");
+    }
+
+    return true;
+  } catch (error) {
+    if (error.code === "ER_DUP_FIELDNAME") {
+      console.log("Quantity column already exists (caught duplicate error)");
+      return true;
+    }
+    console.error("Error adding quantity column:", error);
+    return false;
+  }
+}
+
 // Add role column to users table
 async function addRoleColumn() {
   try {
@@ -76,10 +111,10 @@ async function addRoleColumn() {
 
 // Run migration if this file is executed directly
 if (require.main === module) {
-  Promise.all([migrateDatabase(), addRoleColumn()]).then(() => {
+  Promise.all([migrateDatabase(), addRoleColumn(), addQuantityColumn()]).then(() => {
     console.log("Migration complete");
     process.exit(0);
   });
 }
 
-module.exports = { migrateDatabase, addRoleColumn };
+module.exports = { migrateDatabase, addRoleColumn, addQuantityColumn };
