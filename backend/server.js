@@ -5,7 +5,7 @@ const db = require("./config/db");
 const { createUserTable } = require("./model/User");
 const { createProductTable } = require("./model/Product");
 const { createImageTable } = require("./model/Image");
-const { migrateDatabase, addRoleColumn } = require("./migrate");
+const { migrateDatabase, addRoleColumn, addQuantityColumn } = require("./migrate");
 
 // Import routes
 const userRoutes = require("./routes/userRoutes");
@@ -56,6 +56,9 @@ const initializeTables = async () => {
 
     // Add role column for role-based auth
     await addRoleColumn();
+
+    // Add quantity column for legacy products table
+    await addQuantityColumn();
   } catch (error) {
     console.error("Error during table initialization:", error);
   }
