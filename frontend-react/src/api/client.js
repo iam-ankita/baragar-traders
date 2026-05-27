@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API_BASE_URL =
-  "https://jubliant-simplicity-production-33e3.up.railway.app/api";
+  "https://jubliant-simplicity-production-33e3.up.railway.app";
 
 const apiClient = {
   getAllProducts: async () => {
