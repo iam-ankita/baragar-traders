@@ -2,7 +2,7 @@ import axios from "axios";
 
 const RAW_API_BASE_URL =
   import.meta?.env?.VITE_API_URL ||
-  "https://jubilant-simplicity-production-33e3.up.railway.app";
+  "https://jubilant-simplicity-production-33e3.up.railway.app/api";
 
 const API_BASE_URL = RAW_API_BASE_URL.replace(/\/+$/, "");
 
