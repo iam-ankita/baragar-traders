@@ -9,7 +9,10 @@ import kitchenItemImg from "../images/kitchen-item.png";
 import "../css/styles.css";
 import "../css/footer.css";
 
-const IMAGE_BASE_URL = "https://baragar-backend.onrender.com";
+const RAW_API_BASE_URL =
+  import.meta?.env?.VITE_API_URL ||
+  "https://jubilant-simplicity-production-33e3.up.railway.app/api";
+const IMAGE_BASE_URL = RAW_API_BASE_URL.replace(/\/api\/?$/, "").replace(/\/+$/, "");
 
 const Home = () => {
   const [products, setProducts] = useState([]);
