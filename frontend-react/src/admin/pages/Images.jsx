@@ -3,6 +3,13 @@ import AdminLayout from "../components/AdminLayout";
 import apiClient from "../../api/client";
 
 const AdminImages = () => {
+  const rawApiBaseUrl =
+    import.meta?.env?.VITE_API_URL ||
+    "https://jubilant-simplicity-production-33e3.up.railway.app/api";
+  const imageBaseUrl = rawApiBaseUrl
+    .replace(/\/api\/?$/, "")
+    .replace(/\/+$/, "");
+
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [file, setFile] = useState(null);
@@ -175,11 +182,7 @@ const AdminImages = () => {
                     }}
                   >
                     <img
-                      src={
-                        img.image_path
-                          ? `http://localhost:3000${img.image_path}`
-                          : ""
-                      }
+                      src={img.image_path ? `${imageBaseUrl}${img.image_path}` : ""}
                       alt="Uploaded"
                       style={{
                         maxWidth: "100%",
