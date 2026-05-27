@@ -34,8 +34,9 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files from uploads folder
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// Serve static files from uploads folder (supports persistent volume)
+const uploadsDir = process.env.UPLOADS_DIR || path.join(__dirname, "uploads");
+app.use("/uploads", express.static(uploadsDir));
 
 // Routes
 app.use("/api/users", userRoutes);
