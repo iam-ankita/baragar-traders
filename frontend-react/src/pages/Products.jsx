@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { CartContext } from "../context/CartContext";
 import apiClient from "../api/client";
+
+const IMAGE_BASE_URL = "https://baragar-backend.onrender.com";
 
 const Products = ({
   category,
@@ -13,10 +16,21 @@ const Products = ({
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const { addToCart } = useContext(CartContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     loadProducts();
   }, [category, sort, priceRange, search]);
+
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return "https://via.placeholder.com/300x300";
+
+    if (imagePath.startsWith("http")) {
+      return imagePath;
+    }
+
+    return `${IMAGE_BASE_URL}${imagePath}`;
+  };
 
   const loadProducts = async () => {
     try {
@@ -86,7 +100,7 @@ const Products = ({
               ...product,
               image:
                 images.length > 0
-                  ? `http://localhost:3000${images[0].image_path}`
+                  ? getImageUrl(images[0].image_path)
                   : "https://via.placeholder.com/300x300",
             };
           } catch {
@@ -107,12 +121,22 @@ const Products = ({
   };
 
   const handleAddToCart = (product) => {
+    const loggedInUser = localStorage.getItem("user");
+
+    if (!loggedInUser) {
+      alert("Please login first to add products to cart.");
+      navigate("/login");
+      return;
+    }
+
     addToCart({
       id: product.id,
       name: product.name,
       price: product.price,
       image: product.image,
+      quantity: product.quantity,
     });
+
     alert(`${product.name} added to cart!`);
   };
 
@@ -176,113 +200,130 @@ const Products = ({
               gap: "25px",
             }}
           >
-            {products.map((product) => (
-              <article
-                key={product.id}
-                style={{
-                  background: "#faf8f4",
-                  border: "1px solid #e5ddd2",
-                  padding: "18px",
-                  textAlign: "center",
-                }}
-              >
-                <div
+            {products.map((product) => {
+              const stock = Number(product.quantity || 0);
+              const isOutOfStock = stock <= 0;
+
+              return (
+                <article
+                  key={product.id}
                   style={{
-                    width: "100%",
-                    height: "220px",
-                    background: "#fff",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    overflow: "hidden",
-                    marginBottom: "14px",
-                    border: "1px solid #ece6dc",
+                    background: "#faf8f4",
+                    border: "1px solid #e5ddd2",
+                    padding: "18px",
+                    textAlign: "center",
                   }}
                 >
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    onError={(e) => {
-                      e.target.src = "https://via.placeholder.com/300x300";
-                    }}
+                  <div
                     style={{
-                      maxWidth: "100%",
-                      maxHeight: "100%",
-                      objectFit: "contain",
-                    }}
-                  />
-                </div>
-
-                <div
-                  style={{
-                    display: "inline-block",
-                    background: "#111",
-                    color: "#fff",
-                    padding: "6px 12px",
-                    fontSize: "12px",
-                    marginBottom: "12px",
-                  }}
-                >
-                  {product.category || "Product"}
-                </div>
-
-                <h3
-                  style={{
-                    fontSize: "22px",
-                    marginBottom: "10px",
-                    color: "#1f1f1f",
-                  }}
-                >
-                  {product.name}
-                </h3>
-
-                <p
-                  style={{
-                    fontSize: "15px",
-                    color: "#666",
-                    lineHeight: "1.7",
-                    minHeight: "52px",
-                    marginBottom: "14px",
-                  }}
-                >
-                  {product.description || "Quality kitchen and household product"}
-                </p>
-
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    gap: "12px",
-                    marginTop: "10px",
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: "18px",
-                      fontWeight: "700",
-                      color: "#7a4b21",
+                      width: "100%",
+                      height: "220px",
+                      background: "#fff",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      overflow: "hidden",
+                      marginBottom: "14px",
+                      border: "1px solid #ece6dc",
                     }}
                   >
-                    Rs {parseFloat(product.price || 0).toFixed(0)}
-                  </span>
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      onError={(e) => {
+                        e.target.src = "https://via.placeholder.com/300x300";
+                      }}
+                      style={{
+                        maxWidth: "100%",
+                        maxHeight: "100%",
+                        objectFit: "contain",
+                      }}
+                    />
+                  </div>
 
-                  <button
-                    onClick={() => handleAddToCart(product)}
+                  <div
                     style={{
+                      display: "inline-block",
                       background: "#111",
                       color: "#fff",
-                      border: "none",
-                      padding: "10px 16px",
-                      cursor: "pointer",
-                      fontSize: "14px",
+                      padding: "6px 12px",
+                      fontSize: "12px",
+                      marginBottom: "12px",
                     }}
                   >
-                    Add to Cart
-                  </button>
-                </div>
-              </article>
-            ))}
+                    {product.category || "Product"}
+                  </div>
+
+                  <h3
+                    style={{
+                      fontSize: "22px",
+                      marginBottom: "10px",
+                      color: "#1f1f1f",
+                    }}
+                  >
+                    {product.name}
+                  </h3>
+
+                  <p
+                    style={{
+                      fontSize: "15px",
+                      color: "#666",
+                      lineHeight: "1.7",
+                      minHeight: "52px",
+                      marginBottom: "10px",
+                    }}
+                  >
+                    {product.description || "Quality kitchen and household product"}
+                  </p>
+
+                  <p
+                    style={{
+                      fontSize: "14px",
+                      color: isOutOfStock ? "#a32020" : "#1f7a3d",
+                      fontWeight: "700",
+                      marginBottom: "14px",
+                    }}
+                  >
+                    {isOutOfStock ? "Out of Stock" : `In Stock: ${stock} pcs`}
+                  </p>
+
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      gap: "12px",
+                      marginTop: "10px",
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontSize: "18px",
+                        fontWeight: "700",
+                        color: "#7a4b21",
+                      }}
+                    >
+                      Rs {parseFloat(product.price || 0).toFixed(0)}
+                    </span>
+
+                    <button
+                      onClick={() => handleAddToCart(product)}
+                      disabled={isOutOfStock}
+                      style={{
+                        background: isOutOfStock ? "#999" : "#111",
+                        color: "#fff",
+                        border: "none",
+                        padding: "10px 16px",
+                        cursor: isOutOfStock ? "not-allowed" : "pointer",
+                        fontSize: "14px",
+                      }}
+                    >
+                      {isOutOfStock ? "Unavailable" : "Add to Cart"}
+                    </button>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         )}
       </section>
