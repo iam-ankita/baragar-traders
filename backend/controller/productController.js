@@ -3,7 +3,7 @@ const { Product } = require("../model/Product");
 // Create a new product
 const createProduct = async (req, res) => {
   try {
-    const { name, description, price, category } = req.body;
+    const { name, description, price, category, quantity } = req.body;
 
     // Validate required fields
     if (!name || !price) {
@@ -18,6 +18,7 @@ const createProduct = async (req, res) => {
       description: description || null,
       price,
       category: category || null,
+      quantity: quantity || 0,
     };
 
     const result = await Product.create(productData);
@@ -175,7 +176,7 @@ const searchProducts = async (req, res) => {
 const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const updates = req.body;
+    const { name, description, price, category, quantity } = req.body;
 
     if (!id) {
       return res.status(400).json({
@@ -186,12 +187,21 @@ const updateProduct = async (req, res) => {
 
     // Check if product exists
     const product = await Product.findById(id);
+
     if (product.length === 0) {
       return res.status(404).json({
         success: false,
         message: "Product not found",
       });
     }
+
+    const updates = {
+      name,
+      description,
+      price,
+      category,
+      quantity,
+    };
 
     await Product.update(id, updates);
 
@@ -223,6 +233,7 @@ const deleteProduct = async (req, res) => {
 
     // Check if product exists
     const product = await Product.findById(id);
+
     if (product.length === 0) {
       return res.status(404).json({
         success: false,

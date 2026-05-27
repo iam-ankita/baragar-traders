@@ -1,4 +1,4 @@
-const db = require('../config/db');
+const db = require("../config/db");
 
 // Product Table Structure
 const productTableQuery = `
@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS products (
   description TEXT,
   price DECIMAL(10, 2) NOT NULL,
   category VARCHAR(100),
+  quantity INT(11) NOT NULL DEFAULT 0,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 )`;
@@ -16,67 +17,67 @@ CREATE TABLE IF NOT EXISTS products (
 const createProductTable = async () => {
   try {
     await db.query(productTableQuery);
-    console.log('Products table created or already exists');
+
+    // Add quantity column if old table already exists without quantity
+    await db.query(`
+      ALTER TABLE products
+      ADD COLUMN IF NOT EXISTS quantity INT(11) NOT NULL DEFAULT 0
+    `);
+
+    console.log("Products table created or already exists");
   } catch (err) {
-    console.error('Error creating products table:', err);
+    console.error("Error creating products table:", err);
   }
 };
 
 // Product Model Functions
 const Product = {
-  // Create new product
   create: async (productData) => {
-    const query = 'INSERT INTO products SET ?';
+    const query = "INSERT INTO products SET ?";
     return await db.query(query, [productData]);
   },
 
-  // Get product by ID
   findById: async (id) => {
-    const query = 'SELECT * FROM products WHERE id = ?';
+    const query = "SELECT * FROM products WHERE id = ?";
     const [rows] = await db.query(query, [id]);
     return rows;
   },
 
-  // Get all products
   findAll: async () => {
-    const query = 'SELECT * FROM products';
+    const query = "SELECT * FROM products";
     const [rows] = await db.query(query);
     return rows;
   },
 
-  // Get products by category
   findByCategory: async (category) => {
-    const query = 'SELECT * FROM products WHERE category = ?';
+    const query = "SELECT * FROM products WHERE category = ?";
     const [rows] = await db.query(query, [category]);
     return rows;
   },
 
-  // Get active products
   findActive: async () => {
-    const query = 'SELECT * FROM products WHERE is_active = TRUE';
+    const query = "SELECT * FROM products";
     const [rows] = await db.query(query);
     return rows;
   },
 
-  // Update product
   update: async (id, productData) => {
-    const query = 'UPDATE products SET ? WHERE id = ?';
+    const query = "UPDATE products SET ? WHERE id = ?";
     return await db.query(query, [productData, id]);
   },
 
-  // Delete product
   delete: async (id) => {
-    const query = 'DELETE FROM products WHERE id = ?';
+    const query = "DELETE FROM products WHERE id = ?";
     return await db.query(query, [id]);
   },
 
-  // Search products
   search: async (searchTerm) => {
-    const query = 'SELECT * FROM products WHERE name LIKE ? OR description LIKE ?';
+    const query =
+      "SELECT * FROM products WHERE name LIKE ? OR description LIKE ? OR category LIKE ?";
     const term = `%${searchTerm}%`;
-    const [rows] = await db.query(query, [term, term]);
+    const [rows] = await db.query(query, [term, term, term]);
     return rows;
-  }
+  },
 };
 
 module.exports = { Product, createProductTable };
