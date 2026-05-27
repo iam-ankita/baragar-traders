@@ -3,7 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { CartContext } from "../context/CartContext";
 import apiClient from "../api/client";
 
-const IMAGE_BASE_URL = "https://baragar-backend.onrender.com";
+const RAW_API_BASE_URL =
+  import.meta?.env?.VITE_API_URL ||
+  "https://jubilant-simplicity-production-33e3.up.railway.app/api";
+const IMAGE_BASE_URL = RAW_API_BASE_URL.replace(/\/api\/?$/, "").replace(/\/+$/, "");
 
 const Products = ({
   category,
