@@ -132,9 +132,13 @@ const apiClient = {
       fd.append("product_id", productId);
       fd.append("image", imageFile);
 
-      await axios.post(`${API_BASE_URL}/images/upload`, fd, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      try {
+        await axios.post(`${API_BASE_URL}/images/upload`, fd, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+      } catch (error) {
+        console.warn("Image upload failed; product created without image", error);
+      }
     }
 
     return result;
@@ -150,9 +154,13 @@ const apiClient = {
       fd.append("product_id", id);
       fd.append("image", imageFile);
 
-      await axios.post(`${API_BASE_URL}/images/upload`, fd, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      try {
+        await axios.post(`${API_BASE_URL}/images/upload`, fd, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+      } catch (error) {
+        console.warn("Image upload failed; product updated without new image", error);
+      }
     }
 
     return { data: response.data };
