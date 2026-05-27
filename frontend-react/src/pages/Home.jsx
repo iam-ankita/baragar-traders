@@ -30,7 +30,7 @@ const Home = () => {
             return {
               ...p,
               image: img
-                ? `https://baragar-backend.onrender.com${img}`
+                ? `https://baragar-traders-production.up.railway.app${img}`
                 : "https://via.placeholder.com/300x300",
             };
           } catch {
